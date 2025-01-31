@@ -1,0 +1,40 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 100vh;
+    padding-left: 2em;
+    padding-right: 2em;
+
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1.5em;
+    margin-bottom: 20px;
+}
+
+button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 3em;
+    border-bottom: 4px solid blue;
+    border-top: 4px solid blue;
+}
+
+button:hover {
+    font-size: 3.1em;
+    border-bottom: 4px solid red;
+    border-top: 4px solid red;
+}
