@@ -1,13 +1,14 @@
-
-
 {
-    "manifest_version": 3,
-    "name": "LazyStream",
-    "description": "Extension to automate skipping of intros and recaps in streaming services",
-    "version": "1.0",
-    "action": {
-        "default_popup": "popup.html"
-    },
-    "permissions": ["scripting", "activeTab"],
-    "host_permissions": ["https://www.netflix.com/watch/*"]
+  "manifest_version": 3,
+  "name": "LazyStream",
+  "description": "Extension to automate skipping intros,recaps and outro on Netflix",
+  "version": "1.0",
+  "permissions": ["scripting", "activeTab", "storage", "tabs"],
+  "host_permissions": ["https://www.netflix.com/watch/*"],
+  "background": {
+      "service_worker": "background.js"
+  },
+  "action": {
+      "default_popup": "popup.html"
   }
+}
