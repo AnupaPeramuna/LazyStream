@@ -13,31 +13,36 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
 
                     chrome.storage.local.get(["scriptInjected"], async (data) => {
                         if(!data.scriptInjected){
+                            chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+                                if (request.action === "scriptReady") {
+
+                                    // Mark as injected
+                                    chrome.storage.local.set({ scriptInjected: true });
+    
+                                    // Send start message
+                                    chrome.tabs.sendMessage(tab.id, { action: "startSkip" }, (response) => {
+                                        if (chrome.runtime.lastError) {
+                                            chrome.runtime.sendMessage({ type: "error", message: "Error -  try refreshing the Netflix tab and restarting the extension" });
+                                            console.error("Error sending message to content script:", JSON.stringify(chrome.runtime.lastError, null, 2));
+                                        }
+                                    });
+                                }
+                            })
                         
                             // Inject the script
                             await chrome.scripting.executeScript({
                                 target: { tabId: tab.id },
                                 files: ["netflixSkipObserver.js"]
                             });
-
-                            chrome.storage.local.set({ scriptInjected: true });
-
-                            // Send start message to script
-                            chrome.tabs.sendMessage(tab.id, { action: "startSkip" }, (response) => {
-                                if (chrome.runtime.lastError) {
-                                    chrome.runtime.sendMessage({ type: "error", message: "Error -  try refreshing the Netflix tab and restarting the extension" });
-                                    console.error("Error sending message to content script:", chrome.runtime.lastError);
-                                }
-                            });
                         }
-
+                        
                         else if(data.scriptInjected) {
 
-                            // Send start message to script (already loaded)
+                            // Send only start message to script (already injected)
                             chrome.tabs.sendMessage(tab.id, { action: "startSkip" }, (response) => {
                                 if (chrome.runtime.lastError) {
                                     chrome.runtime.sendMessage({ type: "error", message: "Error -  try refreshing the Netflix tab and restarting the extension" });
-                                    console.error("Error sending message to content script:", chrome.runtime.lastError);
+                                    console.error("Error sending message to content script:", JSON.stringify(chrome.runtime.lastError, null, 2));
                                 }
                             });
 
@@ -51,7 +56,12 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
                         if(data.scriptInjected){
 
                             // Send stop message to script
-                            chrome.tabs.sendMessage(tab.id, {action: "stopSkip"})
+                            chrome.tabs.sendMessage(tab.id, {action: "stopSkip"}, (response) => {
+                                if (chrome.runtime.lastError) {
+                                    chrome.runtime.sendMessage({ type: "error", message: "Sorry, the program failed to stop -  try refreshing the Netflix tab and restarting the extension" });
+                                    console.error("Error sending message to content script:", JSON.stringify(chrome.runtime.lastError, null, 2));
+                                }
+                            })
                         }
 
                         else {
@@ -71,7 +81,6 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
             chrome.runtime.sendMessage({ type: "error", message: "Error -  try refreshing the Netflix tab and restarting the extension." });
             console.error("Error in runtime:", err)
         }
-    }
-);
+});
 
 
