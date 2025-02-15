@@ -4,7 +4,7 @@ class netflixSkipObserver {
         this.timer = 0
     }
 
-    checkButtonContainer() {
+    getButtonContainer() {
         const buttonContainer = document.querySelector(".ltr-fntwn3");
     
         if (!buttonContainer) {
@@ -14,8 +14,8 @@ class netflixSkipObserver {
         return buttonContainer;
     }
 
-    clickSkipButtons(buttonContainer) {
-        const skipButton = buttonContainer.querySelector("[data-uia='player-skip-intro'], [data-uia='player-skip-recap'], [data-uia='next-episode-seamless-button']" )
+    clickSkipButtons() {
+        const skipButton = document.querySelector("[data-uia='player-skip-intro'], [data-uia='player-skip-recap'], [data-uia='next-episode-seamless-button']" )
     
         if (skipButton) {
             skipButton.click();
@@ -33,7 +33,7 @@ class netflixSkipObserver {
     }   
 
     autoSkipNetflix() {
-        const buttonContainer = this.checkButtonContainer();
+        const buttonContainer = this.getButtonContainer();
     
         if (!buttonContainer) {
             return;
