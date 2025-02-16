@@ -1,82 +1,71 @@
 class netflixSkipObserver {
-    constructor() {
-        this.observer = null;
-        this.timer = 0
+  constructor() {
+    this.observer = null;
+    this.timer = 0;
+  }
+
+  getButtonContainer() {
+    const buttonContainer = document.querySelector(".ltr-fntwn3");
+
+    if (!buttonContainer) {
+      return;
     }
 
-    getButtonContainer() {
-        const buttonContainer = document.querySelector(".ltr-fntwn3");
-    
-        if (!buttonContainer) {
-            return;
-        }
+    return buttonContainer;
+  }
 
-        return buttonContainer;
+  clickSkipButtons() {
+    const skipButton = document.querySelector(
+      "[data-uia='player-skip-intro'], [data-uia='player-skip-recap'], [data-uia='next-episode-seamless-button']"
+    );
+
+    if (skipButton) {
+      skipButton.click();
+    }
+  }
+
+  useObserver(buttonContainer) {
+    this.observer = new MutationObserver(() => {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(this.clickSkipButtons(buttonContainer), 200);
+    });
+
+    this.observer.observe(buttonContainer, { childList: true, subtree: true });
+  }
+
+  autoSkipNetflix() {
+    const buttonContainer = this.getButtonContainer();
+
+    if (!buttonContainer) {
+      return;
     }
 
-    clickSkipButtons() {
-        const skipButton = document.querySelector("[data-uia='player-skip-intro'], [data-uia='player-skip-recap'], [data-uia='next-episode-seamless-button']" )
-    
-        if (skipButton) {
-            skipButton.click();
-        }
+    this.useObserver(buttonContainer);
+    this.clickSkipButtons();
+  }
+
+  disconnectObserver() {
+    if (this.observer) {
+      this.observer.disconnect();
+      this.observer = null;
     }
-
-    
-    useObserver(buttonContainer) {
-        this.observer = new MutationObserver(() => {
-            clearTimeout(this.timer);
-            this.timer = setTimeout(this.clickSkipButtons(buttonContainer), 200);
-        });
-
-        this.observer.observe(buttonContainer, { childList: true, subtree: true });
-    }   
-
-    autoSkipNetflix() {
-        const buttonContainer = this.getButtonContainer();
-    
-        if (!buttonContainer) {
-            return;
-        }
-    
-        this.useObserver(buttonContainer);
-        this.clickSkipButtons();
-    }
-
-    disconnectObserver() {
-        if(this.observer){
-       this.observer.disconnect();
-        this.observer = null;
-        }
-    }
+  }
 }
-
 
 const netflixObserver = new netflixSkipObserver();
 
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-    if (request.action === "startSkip") {
-        netflixObserver.autoSkipNetflix();
-        sendResponse({ status: "Skipping started" });
+  if (request.action === "ping") {
+    sendResponse({ status: "active" });
+  } else if (request.action === "startSkip") {
+    netflixObserver.autoSkipNetflix();
+    sendResponse({ status: "Skipping started" });
+  } else if (request.action === "stopSkip") {
+    netflixObserver.disconnectObserver();
+    sendResponse({ status: "Skipping stopped" });
+  } else {
+    sendResponse({ status: "Unknown action" });
+  }
 
-    }
-
-    else if (request.action === "stopSkip") {
-        netflixObserver.disconnectObserver();
-        sendResponse({ status: "Skipping stopped" });
-
-    }
-    else {
-        sendResponse({ status: "Unknown action" });
-    }
-
+  return true;
 });
-
-
-chrome.runtime.sendMessage({ action: "scriptReady" });
-
-
-
-
-
