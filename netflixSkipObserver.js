@@ -24,10 +24,27 @@ class netflixSkipObserver {
     }
   }
 
+  netflixPaused() {
+    const paused = document.querySelector(
+      "[data-uia='watch-video-notification-pause']"
+    );
+
+    if (paused) {
+      return true;
+    }
+
+    return false;
+  }
+
   useObserver(buttonContainer) {
     this.observer = new MutationObserver(() => {
+      // stop looking for skip buttons when video paused
+      if (this.netflixPaused()) {
+        return;
+      }
+
       clearTimeout(this.timer);
-      this.timer = setTimeout(this.clickSkipButtons(buttonContainer), 200);
+      this.timer = setTimeout(() => this.clickSkipButtons(), 500);
     });
 
     this.observer.observe(buttonContainer, { childList: true, subtree: true });
