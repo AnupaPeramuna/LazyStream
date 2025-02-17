@@ -57,7 +57,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
               JSON.stringify(chrome.runtime.lastError, null, 2)
             );
           } else {
-            sendResponse({
+            chrome.runtime.sendMessage({
               type: "success",
               message: "LazyStream is now running!",
             });
@@ -79,7 +79,7 @@ chrome.runtime.onMessage.addListener(async (request, sender, sendResponse) => {
               JSON.stringify(chrome.runtime.lastError, null, 2)
             );
           } else {
-            sendResponse({
+            chrome.runtime.sendMessage({
               type: "success",
               message: "LazyStream has been stopped successfully!",
             });
