@@ -1,33 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <title>LazyStream</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="popup-container">
+      <div class="title-container">
+        <h1 class="title">LazyStream</h1>
+        <p class="description">
+          Automatically skip Netflix intros, recaps and episode endings
+        </p>
+      </div>
 
-    <style>
-        html, body {
-            width: 400px;
-            height: 500px;
-            margin: 0;
-            padding: 0;
-        }
-    </style>
+      <div class="button-container">
+        <button
+          id="start-skip"
+          class="button"
+          aria-label="Start LazyStream"
+          tabindex="0"
+        >
+          <p class="button-label">Start LazyStream</p>
 
-</head>
-<body>
+          <div class="icon">
+            <svg
+              width="30"
+              height="30"
+              viewBox="0 0 24 24"
+              fill="green"
+              style="display: block; margin: auto"
+            >
+              <circle cx="12" cy="12" r="12"></circle>
+            </svg>
+          </div>
+        </button>
 
-    <h1> Lazy Stream</h1>
+        <button
+          id="stop-skip"
+          class="button"
+          aria-label="Stop LazyStream"
+          tabindex="1"
+        >
+          <p class="button-label">Stop LazyStream</p>
 
-    <p> This is a simple web page that will automatically skip the intro of a show on Netflix. </p> 
+          <div class="icon">
+            <svg
+              width="30"
+              height="30"
+              viewBox="0 0 24 24"
+              fill="red"
+              style="display: block; margin: auto"
+            >
+              <circle cx="12" cy="12" r="12"></circle>
+            </svg>
+          </div>
+        </button>
+      </div>
 
-    <button id="start-skip">Start Auto Skipping</button>
-
-    <button id="stop-skip">Stop Auto Skipping</button>
-
+      <div class="status-message"></div>
+    </div>
 
     <script src="index.js"></script>
-</body>
+  </body>
 </html>
-
-
-
