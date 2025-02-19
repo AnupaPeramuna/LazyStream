@@ -67,6 +67,14 @@ class netflixSkipObserver {
       this.observer = null;
     }
   }
+
+  checkObserverStatus() {
+    if (this.observer) {
+      return true;
+    }
+
+    return false;
+  }
 }
 
 const netflixObserver = new netflixSkipObserver();
@@ -74,6 +82,12 @@ const netflixObserver = new netflixSkipObserver();
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   if (request.action === "ping") {
     sendResponse({ status: "active" });
+  } else if (request.action == "observerStatus") {
+    sendResponse({
+      status: netflixObserver.checkObserverStatus()
+        ? "observerOnline"
+        : "observerOffline",
+    });
   } else if (request.action === "startSkip") {
     netflixObserver.autoSkipNetflix();
     sendResponse({ status: "Skipping started" });
