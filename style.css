@@ -51,7 +51,7 @@ body {
   flex-direction: column;
 }
 
-.button {
+.action-button {
   border: none;
   border-radius: 16px;
   padding: 1rem;
@@ -70,11 +70,18 @@ body {
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.button:hover,
-.button:focus {
+.action-button:hover,
+.action-button:focus {
   transform: translateY(-5px);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   outline: none;
+}
+
+.action-button:disabled {
+  background-color: #3a3a3a;
+  color: #aaa;
+  border: 2px solid #3a3a3a;
+  opacity: 0.8;
 }
 
 .button-label {
@@ -96,7 +103,7 @@ body {
     background-color: #222;
     color: white;
   }
-  .button {
+  .action-button {
     background-color: #333;
   }
   .button-label {
@@ -109,7 +116,7 @@ body {
     width: 100%;
     padding: 0.5rem;
   }
-  .button {
+  .action-button {
     padding: 0.5rem;
   }
   .button-label {

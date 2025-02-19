@@ -1,9 +1,18 @@
-document.getElementById("start-skip").addEventListener("click", async () => {
-  chrome.runtime.sendMessage({ action: "startSkip" });
-});
+document.addEventListener("DOMContentLoaded", () => {
+  const startButton = document.getElementById("start-skip");
+  const stopButton = document.getElementById("stop-skip");
 
-document.getElementById("stop-skip").addEventListener("click", async () => {
-  chrome.runtime.sendMessage({ action: "stopSkip" });
+  startButton.addEventListener("click", () => {
+    chrome.runtime.sendMessage({ action: "startSkip" });
+    startButton.disabled = true;
+    stopButton.disabled = false;
+  });
+
+  stopButton.addEventListener("click", () => {
+    chrome.runtime.sendMessage({ action: "stopSkip" });
+    startButton.disabled = false;
+    stopButton.disabled = true;
+  });
 });
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
