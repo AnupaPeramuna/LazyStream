@@ -9,6 +9,6 @@ LazyStream is a Chrome extension that automatically automatically skips Netflix 
 - You can download LazyStream from the [Chrome Web Store](https://chromewebstore.google.com/detail/lazystream/dambejeapddhjgdodlfmoglldghieflg?authuser=0&hl=en-AU).
 
 ## License
-- This project is licensed under a **MIT License**. See [LICENSE.md](LICENSE.md) for details
+- This project is licensed under the **MIT License**. See [LICENSE](LICENSE) for details
 
 
